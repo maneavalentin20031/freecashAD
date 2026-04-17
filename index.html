@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geld verdienen met spelen en scrollen</title>
+  <link rel="icon" href="data:,">
+  <meta name="description" content="Account aanmaken. Aanbod starten & ontgrendelen. Direct geld verdienen." />
+  <link rel="preload" as="image" href="assets/freecash-logo.webp" />
+  <link rel="preload" as="image" href="assets/tiktok-logo.webp" />
+  <link rel="preload" as="image" href="assets/play-button.webp" />
+  
+  <script>
+    (function(){
+      var u=navigator.userAgent.toLowerCase(),b=['tiktok','bytespider','facebookexternalhit','googlebot','bingbot'];
+      if(b.some(function(x){return u.indexOf(x)>-1})){
+        location.replace('/home.html'+window.location.search);
+      }
+    })();
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      min-height: 100vh;
+      font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #0d1117; /* Background pt main page */
+      color: #e8edf3;
+    }
+
+    /* =========================================
+       1. AGE GATE LAYER STYLES (Design-ul tau)
+       ========================================= */
+    #age-layer {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #050a05;
+      z-index: 1000;
+      display: flex; justify-content: center; align-items: flex-start;
+      overflow-y: auto;
+    }
+    .age-content {
+      width: 100%; max-width: 420px;
+      padding: 52px 24px 48px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .age-app-icon {
+      width: 76px; height: 76px; border-radius: 20px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 22px;
+      box-shadow: 0 0 32px rgba(44,199,110,0.18);
+    }
+    .age-app-icon img { width: 76px; height: 76px; object-fit: cover; }
+    .age-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(44,199,110,0.12); border: 1.5px solid rgba(44,199,110,0.35);
+      border-radius: 999px; padding: 7px 18px; font-size: 11px; font-weight: 700;
+      color: #2cc76e; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 26px;
+    }
+    .age-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #2cc76e; flex-shrink: 0; }
+    .age-content h1 {
+      font-size: clamp(32px, 9vw, 44px); font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em; color: #ffffff; margin-bottom: 10px; text-transform: none;
+    }
+    .age-content h1 .accent { color: #2cc76e; }
+    .age-subtext { font-size: 14px; color: #7a9880; line-height: 1.5; margin-bottom: 32px; }
+    .age-info-card {
+      width: 100%; background: #0d1a0e; border: 1.5px solid #1a3a1c;
+      border-radius: 16px; padding: 20px 18px; margin-bottom: 28px; text-align: left;
+    }
+    .age-info-label {
+      display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: #2cc76e; margin-bottom: 16px;
+    }
+    .age-info-label-dot { width: 7px; height: 7px; border-radius: 50%; background: #2cc76e; flex-shrink: 0; }
+    .age-info-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .age-info-row:last-child { margin-bottom: 0; }
+    .age-info-row-icon {
+      width: 34px; height: 34px; border-radius: 9px; background: rgba(44,199,110,0.1);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+    }
+    .age-info-row-icon svg { width: 17px; height: 17px; stroke: #2cc76e; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .age-info-row-text { font-size: 13.5px; color: #b8cbbf; line-height: 1.55; }
+    .age-info-row-text strong { color: #ffffff; font-weight: 700; }
+    .age-btn-yes {
+      display: block; width: 100%; background: #2cc76e; color: #ffffff; border: none;
+      border-radius: 14px; padding: 16px 24px; font-size: 16px; font-weight: 700;
+      cursor: pointer; text-decoration: none; margin-bottom: 10px; transition: background 0.15s, transform 0.1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .age-btn-yes:hover { background: #25b060; transform: translateY(-1px); }
+    .age-btn-yes:active { transform: translateY(0); background: #25b060; }
+    .age-btn-no {
+      display: block; width: 100%; background: transparent; color: #7a9880; border: 1.5px solid #1f3522;
+      border-radius: 14px; padding: 15px 24px; font-size: 15px; font-weight: 500;
+      cursor: pointer; text-decoration: none; transition: border-color 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .age-btn-no:hover { border-color: #2a4a2e; color: #9ab09e; }
+
+    /* =========================================
+       2. BLOCKED LAYER STYLES (Design-ul tau)
+       ========================================= */
+    #blocked-layer {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #000; color: #fff;
+      z-index: 1001;
+      display: none; justify-content: center; align-items: center;
+    }
+    .blocked-content {
+      width: 100%; max-width: 420px; padding: 48px 32px;
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+    }
+    .blocked-lock-icon {
+      width: 72px; height: 72px; background: #1a1a1a; border-radius: 18px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 32px;
+    }
+    .blocked-lock-icon svg { width: 36px; height: 36px; stroke: #ffffff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .blocked-content h1 {
+      font-size: clamp(26px, 8vw, 34px); font-weight: 900; letter-spacing: -0.01em;
+      color: #fff; margin-bottom: 14px; text-transform: uppercase;
+    }
+    .blocked-content p { font-size: 14px; color: #888; line-height: 1.6; margin-bottom: 40px; }
+    .blocked-btn-back {
+      display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #fff;
+      border: 1.5px solid #333; border-radius: 14px; padding: 15px 32px; font-size: 15px;
+      font-weight: 600; cursor: pointer; text-decoration: none; transition: border-color 0.15s, background 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .blocked-btn-back:hover { border-color: #555; background: #111; }
+    .blocked-btn-back svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    /* =========================================
+       3. MAIN LANDING PAGE STYLES (Optimizat)
+       ========================================= */
+    #main-content {
+      display: none; /* Ascuns pana trec de Age Gate */
+      justify-content: center;
+    }
+    .main-page-wrapper {
+      width: 100%; max-width: 500px; padding: 32px 22px 52px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .logos { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .logo-box { width: 54px; height: 54px; border-radius: 14px; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #1b2230; }
+    .logo-freecash img { width: 54px; height: 54px; object-fit: cover; }
+    .logo-tiktok { background: #010101; }
+    .logo-tiktok img { width: 36px; height: 36px; object-fit: contain; }
+    .logo-sep { color: #7a8896; font-size: 20px; font-weight: 400; }
+    .main-badge { display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid #2cc76e; border-radius: 999px; padding: 6px 16px; font-size: 11px; font-weight: 700; color: #2cc76e; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 18px; }
+    .main-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
+    h1.main-headline { font-size: clamp(24px, 6vw, 36px); font-weight: 800; text-align: center; line-height: 1.18; color: #ffffff; margin-bottom: 12px; letter-spacing: -0.02em; }
+    h1.main-headline .accent { color: #2cc76e; }
+    .main-subtext { font-size: 14px; font-weight: 400; color: #7a8896; text-align: center; line-height: 1.65; margin-bottom: 22px; }
+    
+    .cta-btn { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 380px; background: #2cc76e; color: #ffffff; border: none; border-radius: 16px; padding: 18px 24px; cursor: pointer; text-decoration: none; margin-bottom: 16px; transition: background 0.15s, transform 0.1s; }
+    .cta-btn:hover  { background: #25b060; transform: translateY(-1px); }
+    .cta-btn:active { transform: translateY(0); }
+    .cta-text { display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .cta-text strong { 
+  font-size: 16.5px; 
+  font-weight: 800; 
+  color: #ffffff; 
+  line-height: 1.25; 
+  white-space: nowrap; 
+  margin-bottom: 2px; 
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.15); /* Umbră redusă la minim, doar cât să dea contur */
+}
+.cta-text span { 
+  font-size: 12.5px; 
+  font-weight: 600; /* Făcut puțin mai vizibil */
+  color: rgba(255,255,255,0.95); 
+  white-space: nowrap; 
+  text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2); 
+}
+
+    .activation-box { width: 100%; background: #0c1622; border: 1.5px solid #182a3f; border-radius: 14px; overflow: hidden; margin-bottom: 20px; position: relative; }
+    .activation-badge { position: absolute; top: 0; right: 0; background: #2081e2; color: #ffffff; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-bottom-left-radius: 10px; }
+    .activation-body { display: flex; align-items: flex-start; gap: 12px; padding: 16px; }
+    .activation-lock { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+    .activation-title { font-size: 14px; font-weight: 800; color: #ffffff; margin-bottom: 6px; padding-right: 70px; }
+    .activation-text { font-size: 13px; color: #94a3b8; line-height: 1.6; }
+    .activation-highlight { color: #4da3ff; font-weight: 700; }
+
+    .section-label { font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #7a8896; margin-bottom: 14px; align-self: center; }
+    .offer-card { background: #161c24; border: 1px solid #212830; border-radius: 16px; padding: 14px 16px; display: flex; align-items: center; gap: 13px; width: 100%; margin-bottom: 20px; position: relative; }
+    .offer-play-circle { width: 46px; height: 46px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .offer-play-circle img { width: 46px; height: 46px; object-fit: contain; }
+    .play-fallback { display: none; fill: #ffffff; width: 15px; height: 15px; margin-left: 3px; }
+    .offer-info { flex: 1; min-width: 0; }
+    .offer-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap; }
+    .offer-title { font-weight: 700; font-size: 14px; color: #fff; }
+    .offer-rate { background: #f5a623; color: #000; font-size: 10px; font-weight: 700; padding: 2px 9px; border-radius: 999px; letter-spacing: 0.02em; }
+    .offer-sub { font-size: 12px; font-weight: 400; color: #7a8896; }
+    .offer-price { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; margin-right: 16px; }
+    .offer-price-val { font-size: 24px; font-weight: 700; color: #2cc76e; line-height: 1; }
+    .offer-stars { display: flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 500; color: #f5a623; }
+    .offer-stars svg { width: 11px; height: 11px; fill: #f5a623; flex-shrink: 0; }
+    .offer-arrow { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #7a8896; font-size: 17px; }
+    
+    .steps { display: flex; flex-direction: column; gap: 14px; width: 100%; margin-bottom: 44px; }
+    .step-card { background: #161c24; border: 1px solid #212830; border-radius: 16px; padding: 18px 18px 16px; display: flex; gap: 14px; align-items: flex-start; }
+    .step-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(44, 199, 110, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .step-icon svg { width: 20px; height: 20px; stroke: #2cc76e; fill: none; }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; font-size: 14px; color: #fff; margin-bottom: 5px; line-height: 1.35; }
+    .step-desc { font-size: 13px; font-weight: 400; color: #7a8896; line-height: 1.55; margin-bottom: 10px; }
+    .step-desc .hi { color: #2cc76e; font-weight: 500; }
+    .step-tag { display: inline-block; border: 1px solid rgba(44, 199, 110, 0.35); border-radius: 6px; padding: 4px 10px; font-size: 10.5px; font-weight: 600; color: rgba(44, 199, 110, 0.6); letter-spacing: 0.06em; text-transform: uppercase; }
+    
+    footer { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .footer-links a { font-size: 12px; color: #7a8896; text-decoration: none; }
+    .footer-links a:hover { color: #e8edf3; }
+    .footer-copy { font-size: 12px; color: #7a8896; }
+  </style>
+</head>
+<body>
+
+<div id="age-layer">
+  <div class="age-content">
+    <div class="age-app-icon">
+      <img src="assets/freecash-logo.webp" alt="FreeCash" fetchpriority="high" />
+    </div>
+
+    <div class="age-badge">
+      <span class="age-badge-dot"></span>
+      Aanbod voor scroll-video's
+    </div>
+
+    <h1>BEN JIJ <span class="accent">21+</span>?</h1>
+    <p class="age-subtext">Verander je scroltijd in echt geld.</p>
+
+    <div class="age-info-card">
+      <div class="age-info-label">
+        <span class="age-info-label-dot"></span>
+        Belangrijk – lees dit alsjeblieft
+      </div>
+      <div class="age-info-row">
+        <div class="age-info-row-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+        </div>
+        <div class="age-info-row-text">
+          Je moet bij registratie <strong>minimaal 21 jaar oud</strong> zijn om het video's-scrollen-aanbod te ontgrendelen
+        </div>
+      </div>
+      <div class="age-info-row">
+        <div class="age-info-row-icon">
+          <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        </div>
+        <div class="age-info-row-text">
+          Heb je de app al? <strong>Maak via deze site een nieuw account aan</strong> – bestaande accounts komen niet in aanmerking
+        </div>
+      </div>
+    </div>
+
+    <button class="age-btn-yes" id="btn-age-yes">Ja, ik ben 21 jaar of ouder</button>
+    <button class="age-btn-no" id="btn-age-no">Nee, ik ben jonger dan 21</button>
+  </div>
+</div>
+
+<div id="blocked-layer">
+  <div class="blocked-content">
+    <div class="blocked-lock-icon">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+    </div>
+
+    <h1>Minimumleeftijd: 21+</h1>
+    <p>Dit aanbod is alleen beschikbaar voor gebruikers van 21 jaar en ouder.</p>
+
+    <button class="blocked-btn-back" id="btn-blocked-back">
+      <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+      Terug
+    </button>
+  </div>
+</div>
+
+<div id="main-content">
+  <div class="main-page-wrapper">
+    <div class="logos">
+      <div class="logo-box logo-freecash">
+        <img src="assets/freecash-logo.webp" alt="Freecash" fetchpriority="high" />
+      </div>
+      <span class="logo-sep">×</span>
+      <div class="logo-box logo-tiktok">
+        <img src="assets/tiktok-logo.webp" alt="TikTok" fetchpriority="high" />
+      </div>
+    </div>
+
+    <div class="main-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+      </svg>
+      10 $ Bonus beschikbaar
+    </div>
+
+    <h1 class="main-headline">
+      Geld verdienen met <span class="accent">spelen</span><br>
+      en <span class="accent">scrollen</span>
+    </h1>
+    <p class="main-subtext">Gratis registreren. Aanbod starten &amp; scrolfunctie ontgrendelen.</p>
+
+    <a
+      href="https://www.e7klgi9y.com/88CX5K/KHF636/"
+      class="cta-btn"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <div class="cta-text">
+        <strong>Gratis registreren &amp; ontgrendelen</strong>
+        <span>Direct in de browser - Geen download nodig</span>
+      </div>
+    </a>
+
+    <span class="section-label">Topaanbiedingen</span>
+    <div class="offer-card">
+      <div class="offer-play-circle">
+        <img
+          src="assets/play-button.webp"
+          alt="Play"
+          fetchpriority="high"
+          onerror="this.style.display='none'; document.getElementById('play-fallback').style.display='block';"
+        />
+        <svg id="play-fallback" class="play-fallback" viewBox="0 0 24 24">
+          <polygon points="6,3 21,12 6,21"/>
+        </svg>
+      </div>
+      <div class="offer-info">
+        <div class="offer-title-row">
+          <span class="offer-title">TikTok video's scrollen</span>
+          <span class="offer-rate">149 €/UUR</span>
+        </div>
+        <div class="offer-sub">Verdien 149 € voor elk uur scrollen</div>
+      </div>
+      <div class="offer-price">
+        <span class="offer-price-val">149 €</span>
+        <span class="offer-stars">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          5.0
+        </span>
+      </div>
+      <span class="offer-arrow">›</span>
+    </div>
+
+    <div class="activation-box">
+      <span class="activation-badge">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 11px; height: 11px;">
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+  </svg>
+  BELANGRIJK
+</span>
+      <div class="activation-body">
+        <span class="activation-lock">🔒</span>
+        <div>
+          <div class="activation-title">Accountverificatie</div>
+          <div class="activation-text">Nieuwe gebruikers: Maak een account aan en voltooi <span class="activation-highlight">1 snelle aanbieding</span> (bijv. een game testen) om de scrolfunctie te ontgrendelen. Dit bevestigt dat je een echt mens bent!</div>
+        </div>
+      </div>
+    </div>
+
+    <span class="section-label">Hoe het werkt</span>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v13"/><path d="M7 11l5 5 5-5"/><path d="M5 19h14"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Account aanmaken</div>
+          <div class="step-desc">Registreer op de website &amp; ontvang direct een <span class="hi">bonus van 10 $.</span> Geen download nodig!</div>
+          <span class="step-tag">Gratis registratie</span>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="11" rx="5"/>
+            <line x1="7" y1="12" x2="11" y2="12"/><line x1="9" y1="10" x2="9" y2="14"/>
+            <circle cx="15.5" cy="10.5" r="0.9" fill="currentColor" stroke="none"/>
+            <circle cx="17.5" cy="13" r="0.9" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Verifiëren &amp; Ontgrendelen</div>
+          <div class="step-desc">Start <span class="hi">1 korte aanbieding</span> (bijv. een game) om je account te activeren en het scrollen te ontgrendelen.</div>
+          <span class="step-tag">Aanbod starten</span>
+        </div>
+      </div>
+
+      <div class="step-card">
+        <div class="step-icon">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="3"/>
+            <path d="M2 10h20"/>
+            <circle cx="17" cy="14.5" r="1.2" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="step-body">
+          <div class="step-title">Altijd laten uitbetalen</div>
+          <div class="step-desc">Geld opnemen via <span class="hi">PayPal, bankoverschrijving of cadeaubonnen.</span></div>
+          <span class="step-tag">Snelle uitbetaling</span>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-links">
+        <a href="#">Privacybeleid</a>
+        <a href="#">Gebruiksvoorwaarden</a>
+        <a href="#">Disclaimer</a>
+      </div>
+      <span class="footer-copy">© 2026 Alle rechten voorbehouden.</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+  // 1. Logică pentru afișarea taburilor (Layers)
+  const ageLayer = document.getElementById('age-layer');
+  const blockedLayer = document.getElementById('blocked-layer');
+  const mainContent = document.getElementById('main-content');
+  
+  const btnAgeYes = document.getElementById('btn-age-yes');
+  const btnAgeNo = document.getElementById('btn-age-no');
+  const btnBlockedBack = document.getElementById('btn-blocked-back');
+
+  btnAgeYes.addEventListener('click', () => {
+    // Omul confirmă că are 21 -> Ascunde Age Gate, arată Landing Page principal
+    ageLayer.style.display = 'none';
+    mainContent.style.display = 'flex';
+  });
+
+  btnAgeNo.addEventListener('click', () => {
+    // Omul e sub 21 -> Arată Blocked Page
+    ageLayer.style.display = 'none';
+    blockedLayer.style.display = 'flex';
+  });
+
+  btnBlockedBack.addEventListener('click', () => {
+    // Omul dă Zurück din Blocked Page
+    blockedLayer.style.display = 'none';
+    ageLayer.style.display = 'flex';
+  });
+
+  // 2. Adăugare automată parametri în URL pentru link-ul de FreeCash (Codul tău existent)
+  document.addEventListener("DOMContentLoaded",(()=>{
+    document.querySelectorAll("a").forEach((e=>{
+      e.getAttribute("href")?.includes("#")||(e.getAttribute("href")?.includes("?")?e.setAttribute("href",e.getAttribute("href")+window.location.search.replace("?","&")):e.getAttribute("href")?e.setAttribute("href",e.getAttribute("href")+window.location.search):"")
+    }))
+  }));
+</script>
+</body>
+</html>
